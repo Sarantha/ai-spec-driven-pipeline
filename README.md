@@ -9,6 +9,43 @@ This prototype implements an automated, spec-driven engineering loop that ingest
 4. **Sandbox Execution Layer:** Modifies target codebase scripts and constructs matching `pytest` suites restricted exclusively to isolated targets.
 5. **Quality Verification Gates:** Automatically runs the test runners inside isolated localized subprocesses to verify runtime pass states before concluding.
 
+## Setup & Local Execution
+
+Prerequisites
+   
+       Python 3.10+
+       A Google AI Studio API Key
+
+Installation & Environment Binding
+   1. Initialize virtual environment context
+
+    python -m venv venv
+
+   2. Activate the environment shell
+   
+       On Windows Command Prompt (cmd):
+
+          venv\Scripts\activate
+       On Windows PowerShell:
+
+          .\venv\Scripts\Activate.ps1
+       On macOS / Linux:
+
+          source venv/bin/activate
+
+   3. Upgrade pip package manager and install project requirements
+       
+           pip install --upgrade pip
+           pip install -r requirements.txt
+
+## Configure Environment Keys
+   
+       GOOGLE_API_KEY=your_actual_google_ai_studio_api_key_here
+
+## Running the Application
+   
+       python -m streamlit run ui.py
+
 ## Repository Layout
 ```text
 ├── main.py               # CLI Orchestration Engine & Execution Kernel
@@ -34,31 +71,3 @@ This prototype implements an automated, spec-driven engineering loop that ingest
     ├── components.py     # Clean isolated visual structural components (Headers, Shell frames)
     ├── styles.py         # Encapsulated premium dark-theme IDE-Aesthetic CSS codes
     └── utils.py          # Front-end helper tools & runtime stdout capturing traps
-
-## Setup & Local Execution
-
-Prerequisites
-   Python 3.10+
-   A Google AI Studio API Key
-
-Installation & Environment Binding
-   # Initialize virtual environment context
-   python -m venv venv
-
-   # Activate the environment shell
-   # On Windows Command Prompt (cmd):
-   venv\Scripts\activate
-   # On Windows PowerShell:
-   .\venv\Scripts\Activate.ps1
-   # On macOS / Linux:
-   source venv/bin/activate
-
-   # Upgrade pip package manager and install project requirements
-   pip install --upgrade pip
-   pip install -r requirements.txt
-
-Configure Environment Keys
-   GOOGLE_API_KEY=your_actual_google_ai_studio_api_key_here
-
-Running the Application
-   python -m streamlit run ui.py
