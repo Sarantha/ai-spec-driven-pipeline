@@ -14,7 +14,7 @@ from ui.styles import inject_ide_styles
 from ui.utils import StreamToStreamlit
 from ui.components import render_top_bar, render_terminal_header, get_default_terminal_text
 
-from services.spec_loader import YamlFeatureSpecLoader
+from services.spec_loader import SpecLoaderFactory
 from services.planner import GeminiArchitectPlanner
 from services.synthesizer import GeminiCodeSynthesizer
 from services.validator import PytestSubprocessValidator
@@ -52,8 +52,8 @@ with col_left:
         st.markdown('<div style="height: 42px;"></div>', unsafe_allow_html=True)
         
     uploaded_file = st.file_uploader(
-        "Feature specification (.yaml / .yml)",
-        type=["yaml", "yml"],
+        "Feature specification (.yaml / .json / .md)",
+        type=["yaml", "yml", "json", "md"],
         key="spec_file"
     )
     
@@ -67,7 +67,7 @@ with col_left:
     execute_button = st.button(
         "► Run pipeline", 
         use_container_width=True,
-        disabled=not is_valid_input
+        disabled=not is_valid_input or is_running
     )
 
 with col_right:
@@ -81,24 +81,24 @@ with col_right:
         load_dotenv()
         st.session_state["pipeline_active"] = True
         normalized_target_dir = os.path.abspath(target_dir_input)
-        temp_spec_filename = "temp_uploaded_spec.yaml"
+        file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+        temp_spec_filename = f"temp_uploaded_spec{file_extension}"
         
         with open(temp_spec_filename, "wb") as f:
             f.write(uploaded_file.getbuffer())
             
         with col_right:
-            status_box = st.status("Initializing Refactored Engine Architecture...", expanded=False)
+            status_box = st.status("Initializing Multi-Format Engine Architecture...", expanded=False)
             
         streamlit_logger = StreamToStreamlit(log_terminal_placeholder)
         
         with contextlib.redirect_stdout(streamlit_logger):
             try:
-                
-                loader = YamlFeatureSpecLoader()
+                loader = SpecLoaderFactory.get_loader(temp_spec_filename)
                 planner = GeminiArchitectPlanner()
                 synthesizer = GeminiCodeSynthesizer()
                 validator = PytestSubprocessValidator()
-                
+
                 spec_model_obj = loader.load(temp_spec_filename)
                 blueprint_plan = planner.design_plan(spec_model_obj, normalized_target_dir)
                 
@@ -116,7 +116,7 @@ with col_right:
                 print(f"Architecture Contract Classes: {classes}")
                 print(f"Architecture Contract Functions: {funcs}")
                 print("="*60 + "\n")
-                
+
                 target_test_script_name = synthesizer.implement(blueprint_plan, spec_model_obj, normalized_target_dir)
                 success = validator.verify(normalized_target_dir, target_test_script_name)
                 
