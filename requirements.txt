@@ -1,9 +1,17 @@
+# Core Utilities & Data Processing
 pydantic>=2.0.0
 pyyaml>=6.0.0
+python-dotenv>=1.0.0
+pandas>=2.0.0
+
+# AI & Gemini LLM Integration
 langchain-core>=0.1.0
 langchain-google-genai>=1.0.0
+
+# UI Dashboard Framework
+streamlit>=1.30.0
+
+# Development, Testing & Quality Gates
 pytest>=7.0.0
 flake8>=6.0.0
 mypy>=1.0.0
-python-dotenv>=1.0.0
-pandas>=2.0.0
