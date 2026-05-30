@@ -1,8 +1,3 @@
-"""
-schema.py
-Defines the strict structural constraints for specifications and AI execution plans.
-Supports universal dynamic path mapping across external applications.
-"""
 from pydantic import BaseModel, Field
 from typing import List, Optional
 

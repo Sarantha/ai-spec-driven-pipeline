@@ -3,12 +3,11 @@ import sys
 import argparse
 from dotenv import load_dotenv
 
-# Core Interfaces
 from core.interfaces import (
     SpecLoaderInterface, PlannerInterface, 
     CodeSynthesizerInterface, QualityGateInterface
 )
-# Concrete Service Engines
+
 from services.spec_loader import YamlFeatureSpecLoader
 from services.planner import GeminiArchitectPlanner
 from services.synthesizer import GeminiCodeSynthesizer
@@ -28,38 +27,32 @@ class PipelineOrchestrator:
         self.validator = validator
 
     def run(self, spec_path: str, target_dir: str):
-        # 1. Ingestion Quality Gate Checks
         spec_data = self.loader.load(spec_path)
         
-        # 2. Technical Blueprint Mapping
         ai_plan = self.planner.design_plan(spec_data, target_dir)
         
-        # Output Technical Overview Summary Layout
         print("\n" + "="*50)
-        print("📋 DETAILED AI TECHNICAL BLUEPRINT GENERATED FOR EXTERNAL APP")
+        print("DETAILED AI TECHNICAL BLUEPRINT GENERATED FOR EXTERNAL APP")
         print("="*50)
-        print(f"🎯 Target Application Directory: {target_dir}")
-        print(f"🔬 Plan Summary:\n{ai_plan.technical_summary}\n")
-        print(f"📂 Targeted Code Files to Alter: {ai_plan.impacted_files}\n")
-        print("📝 Operational Step-by-Step Tasks:")
+        print(f"Target Application Directory: {target_dir}")
+        print(f"Plan Summary:\n{ai_plan.technical_summary}\n")
+        print(f"Targeted Code Files to Alter: {ai_plan.impacted_files}\n")
+        print("Operational Step-by-Step Tasks:")
         for idx, task in enumerate(ai_plan.tasks, 1):
             print(f"   {idx}. {task}")
         print("="*50)
 
-        # 3. Governance Approval Checkpoint
-        user_approval = input("\n🛑 GOVERNANCE LOCK: Approve execution? (y/n): ")
+        user_approval = input("\nGOVERNANCE LOCK: Approve execution? (y/n): ")
         if user_approval.lower() != 'y':
-            print("❌ Pipeline safely halted by user. External files left unchanged.")
+            print("Pipeline safely halted by user. External files left unchanged.")
             sys.exit(0)
-            
-        # 4 & 5. Mutation Code Base Synthesis
+
         target_test_file = self.synthesizer.implement(ai_plan, spec_data, target_dir)
         
-        # 6. Verification Subprocess
         success = self.validator.verify(target_dir, target_test_file)
         
         if success:
-            print(f"\n🏁 SUCCESS: Feature validated successfully inside '{target_dir}'!")
+            print(f"\nSUCCESS: Feature validated successfully inside '{target_dir}'!")
         else:
             sys.exit(1)
 
@@ -76,10 +69,9 @@ if __name__ == "__main__":
     target_project_dir = os.path.abspath(args.target_dir)
 
     if not os.path.exists(target_project_dir):
-        print(f"❌ Error: Target application directory does not exist at '{target_project_dir}'")
+        print(f"Error: Target application directory does not exist at '{target_project_dir}'")
         sys.exit(1)
 
-    # Dependency Injection Frame Construction
     orchestrator = PipelineOrchestrator(
         loader=YamlFeatureSpecLoader(),
         planner=GeminiArchitectPlanner(),

@@ -11,30 +11,28 @@ class GeminiCodeSynthesizer(CodeSynthesizerInterface):
         chosen_filename = plan.impacted_files[0] if plan.impacted_files else "app.py"
         target_file_path = os.path.join(target_dir, chosen_filename)
         
-        print(f"\n⚙️ Stage 4: AI Engine writing features to external file target: '{target_file_path}'...")
+        print(f"\nStage 4: AI Engine writing features to external file target: '{target_file_path}'...")
         
         existing_code = ""
         if os.path.exists(target_file_path):
             with open(target_file_path, "r") as f:
                 existing_code = f.read()
         else:
-            print(f"ℹ️ Target file '{chosen_filename}' doesn't exist yet. Bootstrapping raw project template from scratch.")
+            print(f"Target file '{chosen_filename}' doesn't exist yet. Bootstrapping raw project template from scratch.")
 
-        # Phase A: Source Injections
         clean_code = self._synthesize_source_code(plan, spec, existing_code)
         with open(target_file_path, "w") as f:
             f.write(clean_code)
-        print(f"💾 Changes successfully applied to external target file: {target_file_path}")
+        print(f"Changes successfully applied to external target file: {target_file_path}")
 
-        # Phase B: Quality Engineering Injections
         test_filename = f"test_{chosen_filename}"
         test_file_path = os.path.join(target_dir, test_filename)
-        print(f"🧪 Stage 5: Auto-generating test specifications inside target project ('{test_file_path}')...")
+        print(f"Stage 5: Auto-generating test specifications inside target project ('{test_file_path}')...")
         
         clean_tests = self._synthesize_test_suite(plan, spec, chosen_filename, clean_code)
         with open(test_file_path, "w") as f:
             f.write(clean_tests)
-        print(f"💾 External test scenarios written to: {test_file_path}")
+        print(f"External test scenarios written to: {test_file_path}")
         
         return test_filename
 

@@ -15,13 +15,13 @@ class GeminiArchitectPlanner(PlannerInterface):
             files = [f for f in os.listdir(target_dir) if f.endswith('.py') and not f.startswith('test_')]
             return files if files else ["app.py"]
         except Exception as e:
-            print(f"❌ Error scanning target directory '{target_dir}': {e}")
+            print(f"Error scanning target directory '{target_dir}': {e}")
             sys.exit(1)
 
     def design_plan(self, spec: FeatureSpec, target_dir: str) -> ImplementationPlan:
-        print("\n🧠 Stage 2: Scanning target codebase and passing context to AI Planning Layer...")
+        print("\nStage 2: Scanning target codebase and passing context to AI Planning Layer...")
         if not os.environ.get("GOOGLE_API_KEY"):
-            print("❌ Error: GOOGLE_API_KEY environment variable is missing!")
+            print("Error: GOOGLE_API_KEY environment variable is missing!")
             sys.exit(1)
 
         codebase_files = self._get_codebase_inventory(target_dir)
@@ -55,8 +55,8 @@ class GeminiArchitectPlanner(PlannerInterface):
 
         try:
             plan: ImplementationPlan = structured_llm.invoke(formatted_prompt)
-            print("✅ Stage 2 Success: AI architect has constructed a structured technical blueprint.")
+            print("Stage 2 Success: AI architect has constructed a structured technical blueprint.")
             return plan
         except Exception as e:
-            print(f"❌ Error during AI planning orchestration: {e}")
+            print(f"Error during AI planning orchestration: {e}")
             sys.exit(1)

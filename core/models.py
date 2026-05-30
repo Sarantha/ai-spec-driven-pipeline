@@ -1,8 +1,3 @@
-"""
-core/models.py
-Domain data structures and schemas used across the pipeline orchestration framework.
-Defines strict validation contracts using Pydantic.
-"""
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Union
 
