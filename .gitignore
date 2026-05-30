@@ -1,0 +1,22 @@
+# Local Environment Variables Configuration
+.env
+.env.local
+.env.*
+
+# Python Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+pyvenv.cfg
+
+# Python Compilation and Cache Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# IDE Specific Files
+.vscode/
+.idea/

@@ -1,0 +1,40 @@
+feature_objective: >
+  Enhance the CSV processing application to extract both unique customer IDs
+  and unique product IDs from the input dataset and generate separate output files.
+
+user_story: >
+  As a system operator, I want the application to extract unique customer IDs
+  and unique product IDs into separate CSV files so that downstream systems
+  can independently process customer and product datasets.
+
+business_rules:
+  - "The input CSV file must contain both customer_id and product_id columns."
+  - "A customer_id may appear multiple times across different product associations."
+  - "A product_id may appear multiple times across different customer associations."
+  - "The system must extract only distinct customer_id values."
+  - "The system must extract only distinct product_id values."
+  - "The customer output file must contain a single customer_id column."
+  - "The product output file must contain a single product_id column."
+  - "The generated output files must be saved in the output directory."
+
+acceptance_criteria:
+  - "The application must read an input CSV file from the input directory."
+  - "The system must generate unique_customers.csv containing only unique customer IDs."
+  - "The system must generate unique_products.csv containing only unique product IDs."
+  - "The customer output CSV must contain a customer_id header."
+  - "The product output CSV must contain a product_id header."
+  - "Duplicate customer_id values must not appear in the customer output file."
+  - "Duplicate product_id values must not appear in the product output file."
+  - "The application must follow OOP design principles with separated service responsibilities."
+
+non_functional_requirements:
+  - "The implementation must maintain PEP8 compliance."
+  - "The application should follow SOLID design principles."
+  - "The codebase should separate business logic from file processing responsibilities."
+  - "The application should remain modular and easily extensible for future entity extraction requirements."
+
+out_of_scope_items:
+  - "Database persistence support."
+  - "REST API integration."
+  - "Real-time streaming file processing."
+  - "Handling encrypted or compressed CSV files."
